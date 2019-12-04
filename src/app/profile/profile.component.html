@@ -1,0 +1,80 @@
+<div class="profile-page">
+    <div class="user-info" *ngIf="this.service.authorInfo">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-10 offset-md-1">
+            <img [src]="this.service.authorInfo.profile?.image" class="user-img" />
+            <h4>{{ this.service.authorInfo.profile?.username }}</h4>
+            <p>
+              {{this.service.authorInfo.profile?.bio}}
+            </p>
+            <button class="btn btn-sm btn-outline-secondary action-btn" 
+            *ngIf="this.follow == false && this.service.authorInfo.profile.username != this.service.user" (click)="followUser(this.service.authorInfo.profile.username)">
+              <i class="ion-plus-round"></i>
+              &nbsp;
+              Follow {{ this.service.authorInfo.profile?.username }} 
+            </button>
+
+            <button class="btn btn-sm btn-outline-secondary action-btn" 
+            *ngIf="this.follow == true && this.service.authorInfo.profile.username != this.service.user" (click)="unfollowUser(this.service.authorInfo.profile.username)">
+              <i class="ion-minus-round"></i>
+              &nbsp;
+              Unfollow {{ this.service.authorInfo.profile?.username }} 
+            </button>
+
+            <button class="btn btn-sm btn-outline-secondary action-btn" 
+            *ngIf="this.service.authorInfo.profile.username == this.service.user" (click)="navigateToSetting()">
+              <i class="ion-plus-round"></i>
+              &nbsp;
+               Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-10 offset-md-1">
+          <div class="articles-toggle">
+            <ul class="nav nav-pills outline-active">
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="active ? 'active' : '' " (click)="getMyArticles(this.service.authorInfo.profile.username)">My Articles</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [ngClass]="!active ? 'active' : '' " (click)="getFavoritedArticles(this.service.authorInfo.profile.username)">Favorited Articles</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div *ngIf="this.service.articlesByAuthor!=null">
+            <div class="article-preview" *ngFor="let article of this.service.articlesByAuthor.articles">
+              <div class="article-meta" >
+                <a><img [src]="article.author.image" /></a>
+                <div class="info">
+                  <a class="author">{{ article.author.username }}</a>
+                  <span class="date">{{ article.createdAt | date }}</span>
+                </div>
+                <button class="btn btn-outline-primary btn-sm pull-xs-right" 
+                [ngClass]="article.favorited ? 'active' : '' " (click)="checkFavorited(article)">
+                  <i class="ion-heart"></i> {{ article.favoritesCount }}
+                </button>
+              </div>
+              <a  class="preview-link" (click)="showDetail(article.slug)">
+                <h1>{{ article.title }}</h1>
+                <p>{{ article.body }}</p>
+                <span>Read more...</span>
+                <ul class="tag-list" *ngFor="let tag of article.tagList">
+                  <li class="tag-default tag-pill tag-outline">{{ tag }}</li>
+                </ul>
+              </a>
+            </div>
+          </div>
+          
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>
+  

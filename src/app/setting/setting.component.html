@@ -1,0 +1,39 @@
+<div class="settings-page">
+    <div class="container page">
+      <div class="row">
+  
+        <div class="col-md-6 offset-md-3 col-xs-12">
+          <h1 class="text-xs-center">Your Settings</h1>
+  
+          <form [formGroup]="f">
+            <fieldset>
+                <fieldset class="form-group">
+                  <input class="form-control" type="text" placeholder="URL of profile picture" formControlName="image">
+                </fieldset>
+                <fieldset class="form-group">
+                  <input class="form-control form-control-lg" type="text" placeholder="Enter name" formControlName="name">
+                  <p *ngIf="this.err != null">{{ this.err.error.errors.username[0] }}</p>
+                </fieldset>
+                <fieldset class="form-group">
+                  <textarea class="form-control form-control-lg" rows="8" placeholder="Short bio about you" formControlName="bio"></textarea>
+                </fieldset>
+                <fieldset class="form-group">
+                  <input class="form-control form-control-lg" type="text" placeholder="Email"  formControlName="email">
+                </fieldset>
+                <fieldset class="form-group">
+                  <input class="form-control form-control-lg" type="password" placeholder="Password" formControlName = "password">
+                </fieldset>
+                <button class="btn btn-lg btn-primary pull-xs-right" (click)="updateUser()">
+                  Update Settings
+                </button>
+            </fieldset>
+          </form>
+          <br>
+          <button class="btn btn-lg btn-primary pull-xs-right" (click)="logOut()">
+              LogOut
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
