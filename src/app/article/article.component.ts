@@ -11,6 +11,7 @@ import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 export class ArticleComponent implements OnInit {
   token = localStorage.getItem("jwt");
   f : FormGroup;
+  following: boolean;
   constructor(private service : BlogappAPIService, private router: Router, private fb: FormBuilder) { 
     this.f = fb.group({
       comment: []
@@ -24,6 +25,11 @@ export class ArticleComponent implements OnInit {
   }
       
   ngOnInit() {
+    if(this.service.articleDetail != null){
+      
+      this.following = this.service.articleDetail.article.author.following;
+      console.log(this.following);
+    }
   }
 
   navigateToForm(slug){
@@ -52,6 +58,7 @@ export class ArticleComponent implements OnInit {
   followUser(username){
     if(this.service.token != null){
       this.service.followUser(username).subscribe( (data) => {  });
+      this.following = true;
     } else {
       this.router.navigate(['/login']);
     }
@@ -73,5 +80,14 @@ export class ArticleComponent implements OnInit {
     });
     
     this.service.getArticleByAuthor(authorname).subscribe( (articles : ArticleList) => { this.service.articlesByAuthor = articles; console.log(articles)});
+  }
+
+  unfollowUser(username){
+    if(this.service.token != null){
+      this.service.unfollowUser(username).subscribe( (data) => {  });
+      this.following = false;
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 }

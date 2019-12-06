@@ -52,7 +52,7 @@
               <div class="article-meta" >
                 <a><img [src]="article.author.image" /></a>
                 <div class="info">
-                  <a class="author">{{ article.author.username }}</a>
+                  <a class="author" (click)="showProfile(article.author.username)">{{ article.author.username }}</a>
                   <span class="date">{{ article.createdAt | date }}</span>
                 </div>
                 <button class="btn btn-outline-primary btn-sm pull-xs-right" 
@@ -69,6 +69,15 @@
                 </ul>
               </a>
             </div>
+
+            <nav class="d-flex" *ngIf="pageNumber != null && pageNumber.length > 0"> 
+              <ul class="pagination">
+                <li class="page-item ng-scope text-success" *ngFor="let page of this.pageNumber; let i = index">
+                  <a class="page-link ng-binding" (click)="loadPage(i, this.service.authorInfo.profile.username)">{{ page }}</a> 
+                </li>
+                
+              </ul>
+            </nav>     
           </div>
           
         </div>

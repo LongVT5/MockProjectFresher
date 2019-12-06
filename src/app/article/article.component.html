@@ -8,11 +8,17 @@
             <a (click)="showProfile(this.service.articleDetail.article.author.username)" class="author">{{ this.service.articleDetail.article.author.username }}</a>
             <span class="date">{{ this.service.articleDetail.article.createdAt | date  }}</span>
           </div>
-          <button class="btn btn-sm btn-outline-secondary" *ngIf="this.service.articleDetail.article.author.username != this.service.user"
+          <button class="btn btn-sm btn-outline-secondary" *ngIf="this.following == false && this.service.articleDetail.article.author.username != this.service.user"
           (click)="followUser(this.service.articleDetail.article.author.username)" >
             <i class="ion-plus-round" ></i>
             &nbsp;
             Follow {{ this.service.articleDetail.article.author.username }} <span class="counter"></span>
+          </button>
+          <button class="btn btn-sm btn-outline-secondary" *ngIf="this.following == true && this.service.articleDetail.article.author.username != this.service.user"
+          (click)="unfollowUser(this.service.articleDetail.article.author.username)" >
+            <i class="ion-plus-round" ></i>
+            &nbsp;
+            Unfollow {{ this.service.articleDetail.article.author.username }} <span class="counter"></span>
           </button>
           &nbsp;&nbsp;
           <button class="btn btn-sm btn-outline-primary" *ngIf="this.service.articleDetail.article.author.username != this.service.user"
@@ -53,12 +59,20 @@
             <span class="date">{{ this.service.articleDetail.article.createdAt | date  }}</span>
           </div>
   
-          <button class="btn btn-sm btn-outline-secondary" *ngIf="this.service.articleDetail.article.author.username != this.service.user"
+          <button class="btn btn-sm btn-outline-secondary" *ngIf="this.following == false && this.service.articleDetail.article.author.username != this.service.user"
           (click)="followUser(this.service.articleDetail.article.author.username)" >
             <i class="ion-plus-round"></i>
             &nbsp;
             Follow {{ this.service.articleDetail.article.author.username }}<span class="counter"></span>
           </button>
+
+          <button class="btn btn-sm btn-outline-secondary" *ngIf="this.following == true && this.service.articleDetail.article.author.username != this.service.user"
+          (click)="unfollowUser(this.service.articleDetail.article.author.username)" >
+            <i class="ion-plus-round"></i>
+            &nbsp;
+            Unfollow {{ this.service.articleDetail.article.author.username }}<span class="counter"></span>
+          </button>
+
           &nbsp;
           <button class="btn btn-sm btn-outline-primary" *ngIf="this.service.articleDetail.article.author.username != this.service.user"
           (click)="addToFavorite(this.service.articleDetail.article)">

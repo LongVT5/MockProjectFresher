@@ -62,21 +62,24 @@ export class HomeComponent implements OnInit {
     this.clickedTag = false;
     this.service.getArticleList().subscribe( (list : ArticleList) => { this.service.articleList = list
     this.pageNumber = ([...Array(this.service.articleList.articlesCount / 10 + 1).keys()]).slice(1);
+    console.log(list)
     this.effect = false});
   }
 
   likeArticle(article){
-    let ad;
+    //let ad;
     //console.log(this.service.token);
     if(this.service.token != null){
-      this.service.addToFavoritedArticle(article).subscribe( (data) => { ad = data});
+      this.service.addToFavoritedArticle(article).subscribe( (data) => { });
     } else {
       this.router.navigate(['/login']);
     }
   }
 
   loadPage(index){
-    this.service.getArticlesByPage(index, this.typeList).subscribe( (data :ArticleList) => {this.service.articleList = data});
+    this.service.getArticlesByPage(index, this.typeList).subscribe( (data :ArticleList) => {this.service.articleList = data
+      console.log(data);
+    });
   }
 
   getArticlesByTag(tag){

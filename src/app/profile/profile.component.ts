@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BlogappAPIService, Article, CommentList, ArticleList } from '../blogapp-api.service';
+import { BlogappAPIService, Article, CommentList, ArticleList, Profile } from '../blogapp-api.service';
 import { Router } from '@angular/router';
 import { ArticleComponent } from '../article/article.component';
 
@@ -11,9 +11,15 @@ import { ArticleComponent } from '../article/article.component';
 export class ProfileComponent implements OnInit {
   follow: boolean ;
   active: boolean = true;
+  pageNumber: number[];
+  type: string ='';
   constructor(private service: BlogappAPIService, private router: Router) {
-    
-   }
+    if(this.service.articlesByAuthor!= null){
+      this.pageNumber = ([...Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10) + 1).keys()]).slice(1);
+      console.log(this.pageNumber);
+
+    }
+  }
 
   ngOnInit() {
     if(this.service.authorInfo){
@@ -35,12 +41,24 @@ export class ProfileComponent implements OnInit {
   }
 
   getFavoritedArticles(userName){
-    this.service.getFavoritedArticles(userName).subscribe( (data :ArticleList) => { this.service.articlesByAuthor = data 
+    this.type = 'favorited';
+    this.service.getFavoritedArticles(userName).subscribe( (data :ArticleList) => { this.service.articlesByAuthor = data
+      if(this.service.articlesByAuthor.articlesCount <= 10){
+        this.pageNumber = [];
+      } else {
+        this.pageNumber = ([...Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10) + 1).keys()]).slice(1);
+      } 
     this.active= false} );
   }
 
   getMyArticles(authorName){
+    this.type = '';
     this.service.getArticleByAuthor(authorName).subscribe( (data : ArticleList) => { this.service.articlesByAuthor = data
+      if(this.service.articlesByAuthor.articlesCount <= 10){
+        this.pageNumber = [];
+      } else {
+        this.pageNumber = ([...Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10) + 1).keys()]).slice(1);
+      }
     this.active= true});
   }
 
@@ -68,5 +86,17 @@ export class ProfileComponent implements OnInit {
     } else {
       this.service.deleteFavoritedArticle(article).subscribe( (data) => ad = data);
     }
+  }
+
+  loadPage(index, author){
+    this.service.getPageArticlesByParam(index, author, this.type).subscribe( (data: ArticleList) => {this.service.articlesByAuthor = data
+    console.log(data) });
+  }
+
+  showProfile(author){
+    this.service.getProfile(author).subscribe( (info :Profile) => { this.service.authorInfo = info ; 
+      this.router.navigate(['/profile']);
+      //console.log(info)
+    });
   }
 }

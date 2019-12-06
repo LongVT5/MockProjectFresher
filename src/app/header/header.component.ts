@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogappAPIService, ArticleList } from '../blogapp-api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import { BlogappAPIService, ArticleList } from '../blogapp-api.service';
 })
 export class HeaderComponent implements OnInit {
   
-  constructor(private service :BlogappAPIService) { }
+  constructor(private service :BlogappAPIService, private router: Router) { }
 
   ngOnInit() {
     
@@ -32,7 +33,9 @@ export class HeaderComponent implements OnInit {
       };
       this.service.authorInfo = currentUser;
       //console.log(data);
-      this.service.getArticleByAuthor(this.service.authorInfo.profile.username).subscribe( (articles : ArticleList) => { this.service.articlesByAuthor = articles});
-    });
+      this.service.getArticleByAuthor(this.service.authorInfo.profile.username).subscribe( (articles : ArticleList) => { this.service.articlesByAuthor = articles
+        this.router.navigate(['/profile']);
+      });
+      });
   }
 }

@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
       password: this.f.controls.password.value
     };
     
-    this.service.registerUser(user).subscribe( (data)=> { });
+    this.service.registerUser(user).subscribe( (data)=> { this.router.navigate(['/login'])});
   }
 
   navigateToLogin(){

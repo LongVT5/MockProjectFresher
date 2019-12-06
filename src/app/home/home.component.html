@@ -14,7 +14,7 @@
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item" *ngIf="this.service.token != null">
-              <a class="nav-link" [ngClass]="effect ? 'active' : '' " (click) = "getFeedArticles()" >Your Feed</a>
+              <a class="nav-link" [ngClass]="effect ? 'active' : '' " (click)="getFeedArticles()">Your Feed</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" [ngClass]="!effect ? 'active' : '' " (click)="getGlobalArticles()">Global Feed</a>
@@ -29,15 +29,14 @@
             <div class="article-meta">
               <a><img [src]="article.author.image" /></a>
               <div class="info">
-                <a class="author" 
-                  (click)="showProfile(article.author.username)">{{ article.author.username }}</a>
+                <a class="author" (click)="showProfile(article.author.username)">{{ article.author.username }}</a>
                 <span class="date">{{ article.createdAt | date }}</span>
               </div>
               <button class="btn btn-outline-primary btn-sm pull-xs-right" (click)="likeArticle(article)">
                 <i class="ion-heart"></i> {{ article.favoritesCount }}
               </button>
             </div>
-            <a  class="preview-link" (click)="getDetail(article.slug)" >
+            <a class="preview-link" (click)="getDetail(article.slug)">
               <h1>{{ article.title }}</h1>
               <p>{{ article.description }}</p>
               <span>Read more...</span>
@@ -54,25 +53,19 @@
         <div class="sidebar">
           <p>Popular Tags</p>
           <div class="tag-list" *ngIf="this.service.tags!=null">
-            <a class="tag-pill tag-default" *ngFor="let tag of this.service.tags.tags" 
-            (click)="getArticlesByTag(tag)">{{ tag }}</a>
+            <a class="tag-pill tag-default" *ngFor="let tag of this.service.tags.tags"
+              (click)="getArticlesByTag(tag)">{{ tag }}</a>
           </div>
         </div>
       </div>
-
-
     </div>
 
-  <nav class="d-flex" *ngIf="pageNumber != null && pageNumber.length > 0"> 
-    <ul class="pagination">
-      <li class="page-item ng-scope text-success" *ngFor="let page of this.pageNumber; let i = index">
-        <a class="page-link ng-binding" (click)="loadPage(i)">{{ page }}</a> 
-      </li>
-      
-    </ul>
-  </nav>      
-
+    <nav class="d-flex" *ngIf="pageNumber != null && pageNumber.length > 0">
+      <ul class="pagination">
+        <li class="page-item ng-scope text-success" *ngFor="let page of this.pageNumber; let i = index">
+          <a class="page-link ng-binding" (click)="loadPage(i)">{{ page }}</a>
+        </li>
+      </ul>
+    </nav>
   </div>
-  
-  
 </div>
