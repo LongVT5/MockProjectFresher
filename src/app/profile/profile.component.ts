@@ -15,7 +15,11 @@ export class ProfileComponent implements OnInit {
   type: string ='';
   constructor(private service: BlogappAPIService, private router: Router) {
     if(this.service.articlesByAuthor!= null){
-      this.pageNumber = ([...Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10) + 1).keys()]).slice(1);
+      if(this.service.articlesByAuthor.articlesCount <= 10){
+        this.pageNumber = [];
+      } else {
+        this.pageNumber =  new Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10 ));
+      }
     }
   }
 
@@ -30,7 +34,9 @@ export class ProfileComponent implements OnInit {
   }
 
   showDetail(slug) {
-    this.service.getArticleDetail(slug).subscribe( (data : Article) => {  this.service.articleDetail = data; });
+    this.service.getArticleDetail(slug).subscribe( (data : Article) => {  
+      this.service.articleDetail = data; 
+    });
     this.service.getComments(slug).subscribe( (comments : CommentList) => { 
       this.service.comments = comments ;
       this.router.navigate(["/article/"+slug])
@@ -39,13 +45,14 @@ export class ProfileComponent implements OnInit {
 
   getFavoritedArticles(userName){
     this.type = 'favorited';
-    this.service.getFavoritedArticles(userName).subscribe( (data :ArticleList) => { this.service.articlesByAuthor = data
+    this.service.getFavoritedArticles(userName).subscribe( (data :ArticleList) => { 
+      this.service.articlesByAuthor = data
       if(this.service.articlesByAuthor.articlesCount <= 10){
         this.pageNumber = [];
       } else {
-        this.pageNumber = ([...Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10) + 1).keys()]).slice(1);
+        this.pageNumber =  new Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10 ));
       } 
-    this.active= false} );
+      this.active= false} );
   }
 
   getMyArticles(authorName){
@@ -55,9 +62,9 @@ export class ProfileComponent implements OnInit {
       if(this.service.articlesByAuthor.articlesCount <= 10){
         this.pageNumber = [];
       } else {
-        this.pageNumber = ([...Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10) + 1).keys()]).slice(1);
+        this.pageNumber =  new Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10 ));
       }
-    this.active= true});
+      this.active= true});
   }
 
   followUser(user){
@@ -90,7 +97,8 @@ export class ProfileComponent implements OnInit {
   }
 
   showProfile(author){
-    this.service.getProfile(author).subscribe( (info :Profile) => { this.service.authorInfo = info ; 
+    this.service.getProfile(author).subscribe( (info :Profile) => { 
+      this.service.authorInfo = info ; 
       this.router.navigate(['/profile/'+author]);
     });
   }

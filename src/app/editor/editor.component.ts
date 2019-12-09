@@ -62,6 +62,7 @@ export class EditorComponent implements OnInit {
       tag: this.tagList
     }
     this.service.editArticle(slug, article).subscribe((data) => { });
+    this.router.navigate(["/"]);
   }
 
   deleteTag(index){

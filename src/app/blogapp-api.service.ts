@@ -134,7 +134,7 @@ export class BlogappAPIService {
 
   getProfile(author) {
     if (this.token != null) {
-      return this.httpClient.get(this.url + "/profiles/" + author    , { headers: { Authorization: 'Token ' + this.token } }
+      return this.httpClient.get(this.url + "/profiles/" + author , { headers: { Authorization: 'Token ' + this.token } }
       );
     } else {
       return this.httpClient.get(this.url + "/profiles/" + author);
@@ -281,7 +281,7 @@ export class BlogappAPIService {
   getArticlesByPage(index, type) {
     let skipNum = index * 10;
     if (this.token != null) {
-      if (type == '') {
+      if (type == 'global') {
         return this.httpClient.get(this.url + "/articles",
           {
             headers: { Authorization: 'Token ' + this.token },

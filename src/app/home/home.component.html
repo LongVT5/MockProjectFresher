@@ -13,10 +13,10 @@
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item" *ngIf="this.service.token != null">
-              <a class="nav-link" [ngClass]="effect ? 'active' : '' " (click)="getFeedArticles()">Your Feed</a>
+              <a class="nav-link" [ngClass]="typeList == 'feed' ? 'active' : '' " (click)="getFeedArticles()">Your Feed</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" [ngClass]="!effect ? 'active' : '' " (click)="getGlobalArticles()">Global Feed</a>
+              <a class="nav-link" [ngClass]="typeList == 'global' ? 'active' : '' " (click)="getGlobalArticles()">Global Feed</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" *ngIf="clickedTag">#{{ tagName }}</a>
@@ -60,8 +60,8 @@
 
     <nav class="d-flex" *ngIf="pageNumber != null && pageNumber.length > 0">
       <ul class="pagination">
-        <li class="page-item ng-scope text-success" *ngFor="let page of this.pageNumber; let i = index">
-          <a class="page-link ng-binding" (click)="loadPage(i)">{{ page }}</a>
+        <li class="page-item ng-scope text-success" [ngClass]="currentPage == i+1 ? 'active' : '' " *ngFor="let page of this.pageNumber; let i = index">
+          <a class="page-link ng-binding "  (click)="loadPage(i)">{{ i+1 }}</a>
         </li>
       </ul>
     </nav>

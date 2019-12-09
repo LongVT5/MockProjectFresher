@@ -73,7 +73,7 @@
             <nav class="d-flex" *ngIf="pageNumber != null && pageNumber.length > 0"> 
               <ul class="pagination">
                 <li class="page-item ng-scope text-success" *ngFor="let page of this.pageNumber; let i = index">
-                  <a class="page-link ng-binding" (click)="loadPage(i, this.service.authorInfo.profile.username)">{{ page }}</a> 
+                  <a class="page-link ng-binding" (click)="loadPage(i, this.service.authorInfo.profile.username)">{{ i+1 }}</a> 
                 </li>                
               </ul>
             </nav>     

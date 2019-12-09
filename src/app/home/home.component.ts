@@ -8,16 +8,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  effect: boolean;
   pageNumber: number[];
   clickedTag: boolean;
   tagName: string;
-  typeList: string;
+  typeList: string = 'global';
+  currentPage : number = 1;
+
   constructor(private service: BlogappAPIService, private router: Router) {
-    this.service.getTagList().subscribe((tag: TagList) => {   this.service.tags = tag;  });
+    this.service.getTagList().subscribe((tag: TagList) => {  
+     this.service.tags = tag; 
+    });
     this.service.getArticleList().subscribe((data: ArticleList) => {
       this.service.articleList = data
-      this.pageNumber = ([...Array(this.service.articleList.articlesCount / 10 + 1).keys()]).slice(1);
+      this.pageNumber =  new Array(this.service.articleList.articlesCount / 10 );
     });
   }
 
@@ -49,19 +52,17 @@ export class HomeComponent implements OnInit {
       if (this.service.articleList.articlesCount < 10) {
         this.pageNumber = [];
       } else {
-        this.pageNumber = ([...Array(Math.ceil(this.service.articleList.articlesCount / 10) + 1).keys()]).slice(1);
+        this.pageNumber =  new Array(Math.ceil(this.service.articleList.articlesCount / 10 ));
       }
-      this.effect = true
     });
   }
 
   getGlobalArticles() {
-    this.typeList = '';
+    this.typeList = 'global';
     this.clickedTag = false;
     this.service.getArticleList().subscribe((list: ArticleList) => {
       this.service.articleList = list
-      this.pageNumber = ([...Array(this.service.articleList.articlesCount / 10 + 1).keys()]).slice(1);
-      this.effect = false
+      this.pageNumber =  new Array(Math.ceil(this.service.articleList.articlesCount / 10 ));
     });
   }
 
@@ -74,14 +75,19 @@ export class HomeComponent implements OnInit {
   }
 
   loadPage(index) {
+    this.currentPage = index + 1;
+    
     this.service.getArticlesByPage(index, this.typeList).subscribe((data: ArticleList) => {    
       this.service.articleList = data
     });
   }
 
   getArticlesByTag(tag) {
+    this.typeList ='';
     this.clickedTag = true;
     this.tagName = tag;
-    this.service.getArticlesByTag(tag).subscribe((data: ArticleList) => { this.service.articleList = data });
+    this.service.getArticlesByTag(tag).subscribe((data: ArticleList) => { 
+      this.service.articleList = data 
+    });
   }
 }
