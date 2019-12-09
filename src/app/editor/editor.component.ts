@@ -20,7 +20,6 @@ export class EditorComponent implements OnInit {
       body: [],
       tag: []
     })
-
     ar.params.subscribe((data) => this.url = data);
   }
 
@@ -51,7 +50,6 @@ export class EditorComponent implements OnInit {
       body: this.f.controls.body.value,
       tag: this.tagList
     }
-   // console.log(article);
     this.service.createArticle(article).subscribe((data) => {  });
     this.router.navigate(["/"]);
   }
@@ -63,12 +61,10 @@ export class EditorComponent implements OnInit {
       body: this.f.controls.body.value,
       tag: this.tagList
     }
-    //console.log(article); 
-    this.service.editArticle(slug, article).subscribe((data) => { console.log(data);});
+    this.service.editArticle(slug, article).subscribe((data) => { });
   }
 
   deleteTag(index){
     this.tagList.splice(index, 1);
-    //console.log(this.tagList);
   }
 }

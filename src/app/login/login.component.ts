@@ -11,35 +11,31 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   f: FormGroup
 
-  constructor(private fb:FormBuilder, private service: BlogappAPIService, private router: Router) {
+  constructor(private fb: FormBuilder, private service: BlogappAPIService, private router: Router) {
     this.f = fb.group({
-      email:[],
-      password:[]
+      email: [],
+      password: []
     })
-   }
+  }
 
   ngOnInit() {
   }
 
-  logIn(){
+  logIn() {
     let user = {
       email: this.f.controls.email.value,
       password: this.f.controls.password.value
     }
 
-    this.service.logIn(user).subscribe((data)=>{
-      localStorage.setItem("jwt",data['user'].token);
-      localStorage.setItem("currentName",data['user'].username);
+    this.service.logIn(user).subscribe((data) => {
+      localStorage.setItem("jwt", data['user'].token);
+      localStorage.setItem("currentName", data['user'].username);
       this.service.isLoggin();
-    //console.log(localStorage.getItem("currentName"));
-    //console.log(data);
-      //this.service.user = localStorage.getItem("currentName");
       this.router.navigate(["/"]);
     });
-    
   }
 
-  navigateToRegister(){
+  navigateToRegister() {
     this.router.navigate(['/register']);
   }
 }

@@ -13,12 +13,13 @@ import { LoginGuard } from './login.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'article', component: ArticleComponent},
+  { path: 'profile/:author', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent},
+  { path: 'article/:slug', component: ArticleComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'setting', component: SettingComponent , canActivate : [LoginGuard]},
   { path: 'editor', component: EditorComponent , canActivate : [LoginGuard]},
-  { path: 'editor/:slug', component: EditorComponent}
+  { path: 'editor/:slug', component: EditorComponent, canActivate : [LoginGuard]}
 ];
 
 @NgModule({

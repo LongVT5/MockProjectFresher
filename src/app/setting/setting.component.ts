@@ -22,7 +22,6 @@ export class SettingComponent implements OnInit {
     })
     service.getCurrentUser().subscribe((data: User) => {
       info = data;
-      //console.log(info.user.email)
       this.f.patchValue({
         image: [info.user.image],
         name: [info.user.username],
@@ -46,18 +45,13 @@ export class SettingComponent implements OnInit {
       password: this.f.controls.password.value
 
     }
-    // console.log(this.f.controls.bio.value);
-    let us;
+    
     this.service.updateUserProfile(userInfo).subscribe((data) => {
       localStorage.setItem("currentName",userInfo.name) ;
       this.service.updateCurrentUser();
       this.router.navigate(['/']);
     },
-      err => { this.err = err; console.log(err); });
-
-    // if(this.err == null){
-    //   // this.router.navigate(['/']);
-    // } 
+      err => { this.err = err;  });
   }
 
   logOut() {

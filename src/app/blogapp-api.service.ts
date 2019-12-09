@@ -69,12 +69,9 @@ export class BlogappAPIService {
   comments: CommentList;
   authorInfo: Profile;
   articlesByAuthor: ArticleList;
-  //currentUser;
   user: string = localStorage.getItem("currentName");
-  token: string = localStorage.getItem("jwt");
-
-  header : object = { headers: { Authorization: 'Token ' + this.token } };
-
+  token: string = localStorage.getItem("jwt") ;
+  
   updateCurrentUser() {
     this.user = localStorage.getItem("currentName");
   }
@@ -124,9 +121,7 @@ export class BlogappAPIService {
 
   getArticleDetail(slug) {
     if (this.token != null) {
-      return this.httpClient.get(this.url + "/articles/" + slug
-        , this.header
-        //{ headers: { Authorization: 'Token ' + this.token } }
+      return this.httpClient.get(this.url + "/articles/" + slug , { headers: { Authorization: 'Token ' + this.token } }
       );
     } else {
       return this.httpClient.get(this.url + "/articles/" + slug);
@@ -139,9 +134,7 @@ export class BlogappAPIService {
 
   getProfile(author) {
     if (this.token != null) {
-      return this.httpClient.get(this.url + "/profiles/" + author
-        , this.header
-        //{ headers: { Authorization: 'Token ' + this.token } }
+      return this.httpClient.get(this.url + "/profiles/" + author    , { headers: { Authorization: 'Token ' + this.token } }
       );
     } else {
       return this.httpClient.get(this.url + "/profiles/" + author);
@@ -151,7 +144,6 @@ export class BlogappAPIService {
   getArticleByAuthor(authorName) {
     return this.httpClient.get(this.url + "/articles",
       {
-        //headers: { Authorization: 'Token ' + this.token },
         params: {
           author: authorName,
           limit: '10'
@@ -177,14 +169,12 @@ export class BlogappAPIService {
         "body": article.body,
         "tagList": article.tag
       },
-    }, this.header
-      //{ headers: { Authorization: 'Token ' + this.token } }
+    }, { headers: { Authorization: 'Token ' + this.token } }
     );
   }
 
   getCurrentUser() {
-    return this.httpClient.get(this.url + '/user', this.header
-    //{ headers: { Authorization: 'Token ' + this.token } }
+    return this.httpClient.get(this.url + '/user', { headers: { Authorization: 'Token ' + this.token } }
     );
   }
 
@@ -196,14 +186,12 @@ export class BlogappAPIService {
           "bio": user.bio,
           "image": user.image
         }
-      }, this.header
-      //{ headers: { Authorization: 'Token ' + this.token } }
+      }, { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
   deleteArticle(slug) {
-    return this.httpClient.delete(this.url + '/articles/' + slug, this.header
-      //{ headers: { Authorization: 'Token ' + this.token } }
+    return this.httpClient.delete(this.url + '/articles/' + slug, { headers: { Authorization: 'Token ' + this.token } }
     );
   }
 
@@ -212,20 +200,23 @@ export class BlogappAPIService {
       "comment": {
         "body": comment.content
       }
-    }, this.header
-     //{ headers: { Authorization: 'Token ' + this.token } }
+    }, { headers: { Authorization: 'Token ' + this.token } }
      );
   }
 
   deleteComment(slug, id) {
-    return this.httpClient.delete(this.url + "/articles/" + slug + "/comments/" + id, this.header
-    //{ headers: { Authorization: 'Token ' + this.token } }
+    return this.httpClient.delete(this.url + "/articles/" + slug + "/comments/" + id, { headers: { Authorization: 'Token ' + this.token } }
     );
   }
 
   getFeedArticles() {
-    return this.httpClient.get(this.url + "/articles/feed",  this.header
-    //{ headers: { Authorization: 'Token ' + this.token } }
+    return this.httpClient.get(this.url + "/articles/feed",  
+      {
+        headers: { Authorization: 'Token ' + this.token },
+        params: {
+          limit: '10'
+        }
+      }
     );
   }
 
@@ -255,26 +246,22 @@ export class BlogappAPIService {
   }
 
   addToFavoritedArticle(article) {
-    return this.httpClient.post(this.url + "/articles/" + article.slug + "/favorite", {}, this.header
-      //{ headers: { Authorization: 'Token ' + this.token } }
+    return this.httpClient.post(this.url + "/articles/" + article.slug + "/favorite", {}, { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
   deleteFavoritedArticle(article) {
-    return this.httpClient.delete(this.url + "/articles/" + article.slug + "/favorite", this.header
-      //{ headers: { Authorization: 'Token ' + this.token } }
+    return this.httpClient.delete(this.url + "/articles/" + article.slug + "/favorite", { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
   followUser(user) {
-    return this.httpClient.post(this.url + "/profiles/" + user + "/follow", {}, this.header
-      //{ headers: { Authorization: 'Token ' + this.token } }
+    return this.httpClient.post(this.url + "/profiles/" + user + "/follow", {}, { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
   unfollowUser(user) {
-    return this.httpClient.delete(this.url + "/profiles/" + user + "/follow", this.header
-      //{ headers: { Authorization: 'Token ' + this.token } }
+    return this.httpClient.delete(this.url + "/profiles/" + user + "/follow", { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
@@ -287,15 +274,14 @@ export class BlogappAPIService {
           "body": article.body,
           "tagList": article.tag
         }
-      }, this.header
-      //{ headers: { Authorization: 'Token ' + this.token } }
-      )
+      }, { headers: { Authorization: 'Token ' + this.token } }
+    )
   }
 
   getArticlesByPage(index, type) {
     let skipNum = index * 10;
     if (this.token != null) {
-      if (type == null) {
+      if (type == '') {
         return this.httpClient.get(this.url + "/articles",
           {
             headers: { Authorization: 'Token ' + this.token },
@@ -360,12 +346,10 @@ export class BlogappAPIService {
             offset: skipNum.toString()
           }
         });
-      }
-      
+      }    
     } else {
       return this.httpClient.get(this.url + "/articles",
         {
-          //headers: { Authorization: 'Token ' + this.token },
           params: {
             author: author,
             limit: "10",
@@ -373,6 +357,5 @@ export class BlogappAPIService {
           }
         });
     }
-
   }
 }

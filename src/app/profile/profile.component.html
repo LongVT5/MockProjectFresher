@@ -50,7 +50,7 @@
           <div *ngIf="this.service.articlesByAuthor!=null">
             <div class="article-preview" *ngFor="let article of this.service.articlesByAuthor.articles">
               <div class="article-meta" >
-                <a><img [src]="article.author.image" /></a>
+                <a (click)="showProfile(article.author.username)"><img [src]="article.author.image" /></a>
                 <div class="info">
                   <a class="author" (click)="showProfile(article.author.username)">{{ article.author.username }}</a>
                   <span class="date">{{ article.createdAt | date }}</span>
@@ -74,16 +74,12 @@
               <ul class="pagination">
                 <li class="page-item ng-scope text-success" *ngFor="let page of this.pageNumber; let i = index">
                   <a class="page-link ng-binding" (click)="loadPage(i, this.service.authorInfo.profile.username)">{{ page }}</a> 
-                </li>
-                
+                </li>                
               </ul>
             </nav>     
-          </div>
-          
-        </div>
-  
+          </div>         
+        </div>  
       </div>
-    </div>
-  
+    </div>  
   </div>
   

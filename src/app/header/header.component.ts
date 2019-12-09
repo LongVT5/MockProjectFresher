@@ -8,23 +8,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  
-  constructor(private service :BlogappAPIService, private router: Router) { }
+
+  constructor(private service: BlogappAPIService, private router: Router) { }
 
   ngOnInit() {
-    
+
   }
 
-  getArticleList(){
-    this.service.getArticleList().subscribe((data : ArticleList) => { this.service.articleList = data 
-    //console.log(data)
+  getArticleList() {
+    this.service.getArticleList().subscribe((data: ArticleList) => {
+      this.service.articleList = data
     });
   }
 
-  getUser(){
-    this.service.getCurrentUser().subscribe( (data) => {
-      let currentUser = { 
-        profile :{
+  getUser() {
+    this.service.getCurrentUser().subscribe((data) => {
+      let currentUser = {
+        profile: {
           username: data['user'].username,
           bio: data['user'].bio,
           image: data['user'].image,
@@ -32,10 +32,10 @@ export class HeaderComponent implements OnInit {
         }
       };
       this.service.authorInfo = currentUser;
-      //console.log(data);
-      this.service.getArticleByAuthor(this.service.authorInfo.profile.username).subscribe( (articles : ArticleList) => { this.service.articlesByAuthor = articles
-        this.router.navigate(['/profile']);
+      this.service.getArticleByAuthor(this.service.authorInfo.profile.username).subscribe((articles: ArticleList) => {
+        this.service.articlesByAuthor = articles
+        this.router.navigate(['/profile/']);
       });
-      });
+    });
   }
 }

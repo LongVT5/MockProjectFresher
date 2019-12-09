@@ -16,8 +16,6 @@ export class ProfileComponent implements OnInit {
   constructor(private service: BlogappAPIService, private router: Router) {
     if(this.service.articlesByAuthor!= null){
       this.pageNumber = ([...Array(Math.ceil(this.service.articlesByAuthor.articlesCount / 10) + 1).keys()]).slice(1);
-      console.log(this.pageNumber);
-
     }
   }
 
@@ -32,11 +30,10 @@ export class ProfileComponent implements OnInit {
   }
 
   showDetail(slug) {
-    this.service.getArticleDetail(slug).subscribe( (a : Article) => {  this.service.articleDetail = a; console.log(a)});
-    
+    this.service.getArticleDetail(slug).subscribe( (data : Article) => {  this.service.articleDetail = data; });
     this.service.getComments(slug).subscribe( (comments : CommentList) => { 
       this.service.comments = comments ;
-      this.router.navigate(["/article"])
+      this.router.navigate(["/article/"+slug])
     });
   }
 
@@ -53,7 +50,8 @@ export class ProfileComponent implements OnInit {
 
   getMyArticles(authorName){
     this.type = '';
-    this.service.getArticleByAuthor(authorName).subscribe( (data : ArticleList) => { this.service.articlesByAuthor = data
+    this.service.getArticleByAuthor(authorName).subscribe( (data : ArticleList) => { 
+      this.service.articlesByAuthor = data
       if(this.service.articlesByAuthor.articlesCount <= 10){
         this.pageNumber = [];
       } else {
@@ -68,8 +66,7 @@ export class ProfileComponent implements OnInit {
       this.follow = true;
     } else {
       this.router.navigate(['/login']);
-    }
-    
+    }  
   }
 
   unfollowUser(user){
@@ -79,24 +76,22 @@ export class ProfileComponent implements OnInit {
   }
 
   checkFavorited(article){
-    //console.log(article.favorited);
-    let ad;
     if(article.favorited == false){
-      this.service.addToFavoritedArticle(article).subscribe( (data) => ad = data);
+      this.service.addToFavoritedArticle(article).subscribe( (data) => { } );
     } else {
-      this.service.deleteFavoritedArticle(article).subscribe( (data) => ad = data);
+      this.service.deleteFavoritedArticle(article).subscribe( (data) => { } );
     }
   }
 
   loadPage(index, author){
-    this.service.getPageArticlesByParam(index, author, this.type).subscribe( (data: ArticleList) => {this.service.articlesByAuthor = data
-    console.log(data) });
+    this.service.getPageArticlesByParam(index, author, this.type).subscribe( (data: ArticleList) => {
+      this.service.articlesByAuthor = data
+    });
   }
 
   showProfile(author){
     this.service.getProfile(author).subscribe( (info :Profile) => { this.service.authorInfo = info ; 
-      this.router.navigate(['/profile']);
-      //console.log(info)
+      this.router.navigate(['/profile/'+author]);
     });
   }
 }

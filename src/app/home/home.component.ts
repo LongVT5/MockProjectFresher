@@ -9,82 +9,79 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   effect: boolean;
-  pageNumber: number [];
+  pageNumber: number[];
   clickedTag: boolean;
   tagName: string;
   typeList: string;
-  constructor(private service : BlogappAPIService , private router: Router) {
-    this.service.getTagList().subscribe((tag : TagList) => { this.service.tags = tag; 
-      //console.log(tag) 
+  constructor(private service: BlogappAPIService, private router: Router) {
+    this.service.getTagList().subscribe((tag: TagList) => {   this.service.tags = tag;  });
+    this.service.getArticleList().subscribe((data: ArticleList) => {
+      this.service.articleList = data
+      this.pageNumber = ([...Array(this.service.articleList.articlesCount / 10 + 1).keys()]).slice(1);
     });
-    this.service.getArticleList().subscribe((data : ArticleList) => { this.service.articleList = data 
-       this.pageNumber = ([...Array(this.service.articleList.articlesCount / 10 + 1).keys()]).slice(1);
-      //console.log(this.pageNumber);
-    });
-   }
+  }
 
   ngOnInit() {
-    
+   
   }
 
-  getDetail(slug){
-    this.service.getArticleDetail(slug).subscribe( (a : Article) => {  this.service.articleDetail = a; 
-      this.router.navigate(['/article']);
-      //console.log(a)
-   });
-    
-    // this.service.getComments(slug).subscribe( (comments : CommentList) => {  this.service.comments = comments; console.log(comments) });
-  }
-
-  showProfile(author){
-    this.service.getProfile(author).subscribe( (info :Profile) => { this.service.authorInfo = info ; 
-      this.router.navigate(['/profile']);
-      //console.log(info)
+  getDetail(slug) {
+    this.service.getArticleDetail(slug).subscribe( (data: Article) => {
+      this.service.articleDetail = data;
+      this.router.navigate(['/article/' + slug]);
     });
-    
-    this.service.getArticleByAuthor(author).subscribe( (articles : ArticleList) => { this.service.articlesByAuthor = articles; console.log(articles)});
   }
 
-  getFeedArticles(){
+  showProfile(author) {
+    this.service.getProfile(author).subscribe((info: Profile) => {
+      this.service.authorInfo = info;
+      this.router.navigate(['/profile/' + author]);
+    });
+    this.service.getArticleByAuthor(author).subscribe((articles: ArticleList) => { 
+      this.service.articlesByAuthor = articles; 
+    });
+  }
+
+  getFeedArticles() {
     this.typeList = 'feed';
-    this.service.getFeedArticles().subscribe( (list: ArticleList) => {this.service.articleList = list
-      if(this.service.articleList.articlesCount < 10){
+    this.service.getFeedArticles().subscribe((list: ArticleList) => {
+      this.service.articleList = list
+      if (this.service.articleList.articlesCount < 10) {
         this.pageNumber = [];
       } else {
         this.pageNumber = ([...Array(Math.ceil(this.service.articleList.articlesCount / 10) + 1).keys()]).slice(1);
       }
-      //console.log(this.service.articleList.articlesCount)
-    this.effect = true});
+      this.effect = true
+    });
   }
 
-  getGlobalArticles(){
+  getGlobalArticles() {
     this.typeList = '';
     this.clickedTag = false;
-    this.service.getArticleList().subscribe( (list : ArticleList) => { this.service.articleList = list
-    this.pageNumber = ([...Array(this.service.articleList.articlesCount / 10 + 1).keys()]).slice(1);
-    console.log(list)
-    this.effect = false});
+    this.service.getArticleList().subscribe((list: ArticleList) => {
+      this.service.articleList = list
+      this.pageNumber = ([...Array(this.service.articleList.articlesCount / 10 + 1).keys()]).slice(1);
+      this.effect = false
+    });
   }
 
-  likeArticle(article){
-    //let ad;
-    //console.log(this.service.token);
-    if(this.service.token != null){
-      this.service.addToFavoritedArticle(article).subscribe( (data) => { });
+  likeArticle(article) {
+    if (this.service.token != null) {
+      this.service.addToFavoritedArticle(article).subscribe((data) => { });
     } else {
       this.router.navigate(['/login']);
     }
   }
 
-  loadPage(index){
-    this.service.getArticlesByPage(index, this.typeList).subscribe( (data :ArticleList) => {this.service.articleList = data
-      console.log(data);
+  loadPage(index) {
+    this.service.getArticlesByPage(index, this.typeList).subscribe((data: ArticleList) => {    
+      this.service.articleList = data
     });
   }
 
-  getArticlesByTag(tag){
+  getArticlesByTag(tag) {
     this.clickedTag = true;
     this.tagName = tag;
-    this.service.getArticlesByTag(tag).subscribe( (data: ArticleList) => { this.service.articleList = data });
+    this.service.getArticlesByTag(tag).subscribe((data: ArticleList) => { this.service.articleList = data });
   }
 }
