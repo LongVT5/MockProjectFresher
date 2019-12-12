@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  f: FormGroup
-
+  f: FormGroup;
+  err : Object;
   constructor(private fb: FormBuilder, private service: BlogappAPIService, private router: Router) {
     this.f = fb.group({
       email: [],
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("currentName", data['user'].username);
       this.service.isLoggin();
       this.router.navigate(["/"]);
-    });
+    }, err => {this.err = err });
   }
 
   navigateToRegister() {

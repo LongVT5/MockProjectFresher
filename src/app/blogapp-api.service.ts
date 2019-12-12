@@ -83,11 +83,11 @@ export class BlogappAPIService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getTagList() {
+  getTagList() : Observable<Object> {
     return this.httpClient.get(this.url + "/tags");
   }
 
-  getArticleList() {
+  getArticleList() : Observable<Object> { 
     if (this.token != null) {
       return this.httpClient.get(this.url + "/articles",
         {
@@ -108,7 +108,7 @@ export class BlogappAPIService {
     }
   }
 
-  registerUser(user) {
+  registerUser(user) : Observable<Object> {
     return this.httpClient.post(this.url + "/users", {
       "user": {
         "username": user.name,
@@ -119,7 +119,7 @@ export class BlogappAPIService {
     );
   }
 
-  getArticleDetail(slug) {
+  getArticleDetail(slug) : Observable<Object> {
     if (this.token != null) {
       return this.httpClient.get(this.url + "/articles/" + slug , { headers: { Authorization: 'Token ' + this.token } }
       );
@@ -128,11 +128,11 @@ export class BlogappAPIService {
     }
   }
 
-  getComments(slug) {
+  getComments(slug) : Observable<Object> {
     return this.httpClient.get(this.url + "/articles/" + slug + "/comments");
   }
 
-  getProfile(author) {
+  getProfile(author) : Observable<Object>{
     if (this.token != null) {
       return this.httpClient.get(this.url + "/profiles/" + author , { headers: { Authorization: 'Token ' + this.token } }
       );
@@ -141,7 +141,7 @@ export class BlogappAPIService {
     }
   }
 
-  getArticleByAuthor(authorName) {
+  getArticleByAuthor(authorName) : Observable<Object> {
     return this.httpClient.get(this.url + "/articles",
       {
         params: {
@@ -152,7 +152,7 @@ export class BlogappAPIService {
     );
   }
 
-  logIn(user) {
+  logIn(user) : Observable<Object>{
     return this.httpClient.post(this.url + "/users/login", {
       "user": {
         "email": user.email,
@@ -161,7 +161,7 @@ export class BlogappAPIService {
     });
   }
 
-  createArticle(article) {
+  createArticle(article) : Observable<Object>{
     return this.httpClient.post(this.url + "/articles", {
       "article": {
         "title": article.title,
@@ -173,12 +173,12 @@ export class BlogappAPIService {
     );
   }
 
-  getCurrentUser() {
+  getCurrentUser() : Observable<Object>{
     return this.httpClient.get(this.url + '/user', { headers: { Authorization: 'Token ' + this.token } }
     );
   }
 
-  updateUserProfile(user) {
+  updateUserProfile(user) : Observable<Object>{
     return this.httpClient.put(this.url + '/user',
       {
         "user": {
@@ -190,12 +190,12 @@ export class BlogappAPIService {
       );
   }
 
-  deleteArticle(slug) {
+  deleteArticle(slug) : Observable<Object>{
     return this.httpClient.delete(this.url + '/articles/' + slug, { headers: { Authorization: 'Token ' + this.token } }
     );
   }
 
-  createComment(slug, comment) {
+  createComment(slug, comment) : Observable<Object>{
     return this.httpClient.post(this.url + "/articles/" + slug + "/comments", {
       "comment": {
         "body": comment.content
@@ -204,12 +204,12 @@ export class BlogappAPIService {
      );
   }
 
-  deleteComment(slug, id) {
+  deleteComment(slug, id) : Observable<Object>{
     return this.httpClient.delete(this.url + "/articles/" + slug + "/comments/" + id, { headers: { Authorization: 'Token ' + this.token } }
     );
   }
 
-  getFeedArticles() {
+  getFeedArticles() : Observable<Object>{
     return this.httpClient.get(this.url + "/articles/feed",  
       {
         headers: { Authorization: 'Token ' + this.token },
@@ -220,7 +220,7 @@ export class BlogappAPIService {
     );
   }
 
-  getFavoritedArticles(userName) {
+  getFavoritedArticles(userName) : Observable<Object>{
     if (this.token != null) {
       return this.httpClient.get(this.url + "/articles",
         {
@@ -245,27 +245,27 @@ export class BlogappAPIService {
     localStorage.clear();
   }
 
-  addToFavoritedArticle(article) {
+  addToFavoritedArticle(article) : Observable<Object>{
     return this.httpClient.post(this.url + "/articles/" + article.slug + "/favorite", {}, { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
-  deleteFavoritedArticle(article) {
+  deleteFavoritedArticle(article) : Observable<Object>{
     return this.httpClient.delete(this.url + "/articles/" + article.slug + "/favorite", { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
-  followUser(user) {
+  followUser(user) : Observable<Object>{
     return this.httpClient.post(this.url + "/profiles/" + user + "/follow", {}, { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
-  unfollowUser(user) {
+  unfollowUser(user) : Observable<Object>{
     return this.httpClient.delete(this.url + "/profiles/" + user + "/follow", { headers: { Authorization: 'Token ' + this.token } }
       );
   }
 
-  editArticle(slug, article) {
+  editArticle(slug, article) : Observable<Object>{
     return this.httpClient.put(this.url + '/articles/' + slug,
       {
         "article": {
@@ -278,7 +278,7 @@ export class BlogappAPIService {
     )
   }
 
-  getArticlesByPage(index, type) {
+  getArticlesByPage(index, type) : Observable<Object>{
     let skipNum = index * 10;
     if (this.token != null) {
       if (type == 'global') {
@@ -314,7 +314,7 @@ export class BlogappAPIService {
     }
   }
 
-  getArticlesByTag(tag) {
+  getArticlesByTag(tag) : Observable<Object>{
     return this.httpClient.get(this.url + "/articles",
       {
         params: {
@@ -324,7 +324,7 @@ export class BlogappAPIService {
       })
   }
 
-  getPageArticlesByParam(index, author, type) {
+  getPageArticlesByParam(index, author, type): Observable<Object> {
     let skipNum = index * 10;
     if (type == 'favorited') {
       if(this.token != null){

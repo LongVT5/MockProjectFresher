@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   f: FormGroup;
-  
+  err: Object;
   constructor(private fb: FormBuilder , private service: BlogappAPIService, private router: Router) {
     this.f = fb.group({
       name: [],
@@ -29,7 +29,8 @@ export class RegisterComponent implements OnInit {
       password: this.f.controls.password.value
     };
     
-    this.service.registerUser(user).subscribe( (data)=> { this.router.navigate(['/login'])});
+    this.service.registerUser(user).subscribe( (data)=> { this.router.navigate(['/login'])},
+    err => { this.err = err });
   }
 
   navigateToLogin(){
